@@ -6,6 +6,11 @@ import (
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
+	// without the exact path match, "/" is a subtree pattern and acts as a catch-all
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
 	w.Write([]byte("Hello form Snippetbox"))
 }
 
