@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	fmt "fmt"
 	"net/http"
 	"strconv"
 	"text/template"
