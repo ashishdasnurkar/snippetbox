@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+	"errors"
 	fmt "fmt"
 	"net/http"
 	"strconv"
@@ -36,9 +38,8 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
-	app.infoLog.Println(r.Method)
 	// had to comment this because a redirect from Post handler still retains r.Method as Post
-	
+
 	//if r.Method != http.MethodGet {
 	//	app.clientError(w, http.StatusMethodNotAllowed)
 	//	return
@@ -49,7 +50,18 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
-	fmt.Fprintf(w, "Displaying snippet with ID %d", id)
+	s, err := app.snippets.Get(id)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	fmt.Fprintf(w, "%v", s)
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {

@@ -8,7 +8,7 @@ import (
 
 func (app *application) serverError(w http.ResponseWriter, err error) {
 	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
-	app.errorLog.Output(2, trace) // this will output the 2nd call in the stack
+	app.errorLog.Output(4, trace) // this will output the 2nd call in the stack
 
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }
