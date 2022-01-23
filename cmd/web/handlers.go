@@ -35,7 +35,7 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	//	app.clientError(w, http.StatusMethodNotAllowed)
 	//	return
 	//}
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
 
 	if err != nil || id < 1 {
 		app.notFound(w)
@@ -57,6 +57,10 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Creating a new snippet..."))
+}
+
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		app.clientError(w, http.StatusMethodNotAllowed)
@@ -73,6 +77,6 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/snippet/%d", id), http.StatusSeeOther)
 	//w.Write([]byte("Creating new snippet..."))
 }
