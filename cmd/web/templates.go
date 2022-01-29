@@ -19,9 +19,10 @@ var functions = template.FuncMap{
 
 type templateData struct {
 	CurrentYear int
-	Form *forms.Form
-	Snippet *models.Snippet
-	Snippets []*models.Snippet
+	Form        *forms.Form
+	Snippet     *models.Snippet
+	Snippets    []*models.Snippet
+	Flash       string
 }
 
 func newTemplateCache (dir string) (map[string]*template.Template, error) {
