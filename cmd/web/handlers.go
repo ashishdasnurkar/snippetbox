@@ -22,9 +22,10 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-
+	flash := app.session.PopString(r, "flash")
 
 	app.render(w,r, "home.page.tmpl", &templateData{
+		Flash: flash,
 		Snippets: s,
 	})
 }
@@ -177,5 +178,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request)  {
 }
 
 func(app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "User logged out successfully...")
+	app.session.Remove(r, "authenticatedUserId")
+	app.session.Put(r, "flash",  "You have been successsfully logged out!")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
