@@ -14,6 +14,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golangcollege/sessions"
 )
+type contextKey string
+
+const contextKeyIsAuthenticated = contextKey("IsAuthenticated")
 
 type application struct {
 	errorLog *log.Logger
